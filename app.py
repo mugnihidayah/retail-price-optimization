@@ -13,6 +13,9 @@ st.set_page_config(
 
 st.markdown("""
 <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
     .metric-card {
         background-color: #0e1117;
         border: 1px solid #30333f;
