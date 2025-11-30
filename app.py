@@ -13,16 +13,6 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    [data-testid="stToolbar"] {visibility: hidden !important;}
-    [data-testid="stDecoration"] {visibility: hidden !important;}
-    [data-testid="stStatusWidget"] {visibility: hidden !important;}
-    .block-container {
-        padding-top: 1rem !important; 
-        padding-bottom: 1rem !important;
-    }
     .metric-card {
         background-color: #0e1117;
         border: 1px solid #30333f;
