@@ -34,7 +34,7 @@ Simulates price elasticity and competitor data to prescribe optimal pricing stra
 
 ## 🎯 Overview
 
-The **Retail Price Optimization Engine** is a machine learning solution designed to shift retailers from reactive pricing to **Prescriptive Analytics**. Unlike traditional forecasting, this system doesn't just predict sales—it calculates the **Optimal Price Point**.
+The **Retail Price Optimization Engine** is a machine learning solution designed to shift retailers from reactive pricing to **Prescriptive Analytics**. Unlike traditional forecasting, this system doesn't just predict sales it calculates the **Optimal Price Point**.
 
 By leveraging **Random Forest Regression** and other ensemble methods, the system learns the non-linear relationship between Price and Demand (Elasticity), factoring in competitor pricing to recommend strategies that maximize **Total Revenue**.
 
