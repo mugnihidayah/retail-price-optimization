@@ -452,13 +452,24 @@ def calculate_confidence_interval(
     Returns:
         Tuple of (lower_bound, upper_bound)
     """
-    from scipy import stats
-    n = len(values)
-    mean = np.mean(values)
-    se = stats.sem(values)
-    
-    # t-value for confidence interval
-    t_val = stats.t.ppf((1 + confidence) / 2, n - 1)
-    
-    margin = t_val * se
-    return (mean - margin, mean + margin)
+    try:
+        from scipy import stats
+        n = len(values)
+        mean = np.mean(values)
+        se = stats.sem(values)
+        
+        # t-value for confidence interval
+        t_val = stats.t.ppf((1 + confidence) / 2, n - 1)
+        
+        margin = t_val * se
+        return (mean - margin, mean + margin)
+    except ImportError:
+        # Fallback if scipy not available
+        n = len(values)
+        mean = np.mean(values)
+        std = np.std(values)
+        se = std / np.sqrt(n)
+        # Use z-value approximation (1.96 for 95%)
+        z_val = 1.96 if confidence == 0.95 else 1.645
+        margin = z_val * se
+        return (mean - margin, mean + margin)
