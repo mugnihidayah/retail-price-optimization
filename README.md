@@ -43,11 +43,13 @@ Why does this matter? Most retailers still rely on gut feeling or simple cost-pl
 ## ✨ Features
 
 ### 🤖 Core Intelligence
+
 - **Elasticity Modeling**: Captures non-linear demand response to price changes.
 - **Competitor Benchmarking**: Real-time tracking of price gaps against top 3 competitors (`diff_competitor`, `ratio_competitor`).
 - **Revenue Maximization**: Simulation algorithm tests 50+ price points per SKU to find the "Sweet Spot".
 
 ### 📊 Interactive Dashboard (Streamlit)
+
 - **Product Portfolio View**: Filter products by category.
 - **Real-time Inference**: Sub-second prediction for pricing scenarios.
 - **Visual Analytics**: Interactive Plotly charts showing the Revenue Curve (Current vs Optimal).
@@ -85,19 +87,33 @@ retail-price-optimization/
 │   ├── processed/      # Cleaned data used for app demo
 │   └── raw/            # (Gitignored) Raw source data
 ├── models/
-│   └── pricing_model.pkl # Trained Random Forest Model
+│   ├── pricing_model.pkl         # Original Random Forest Model
+│   └── pricing_model_enhanced.pkl # XGBoost/LightGBM Model (after training)
 ├── notebooks/
 │   ├── 01_eda_pricing_logic.ipynb
 │   ├── 02_feature_engineering.ipynb
 │   ├── 03_modeling.ipynb
 │   └── 04_price_optimization.ipynb
+├── tests/
+│   └── test_utils.py   # Unit tests
 ├── .gitignore
-├── app.py              # Main Streamlit Application
+├── app.py              # Original Streamlit Application
+├── app_enhanced.py     # Enhanced App (batch optimization, export, etc.)
+├── model_training.py   # Model training with XGBoost, LightGBM, CV
+├── utils.py            # Utility functions
 ├── requirements.txt    # Production dependencies
 └── README.md           # Documentation
 ```
 
+**What's new?**
+
+- `utils.py` - Modular utility functions with safe division, input validation
+- `model_training.py` - Train multiple models (XGBoost, LightGBM, Random Forest) with cross-validation
+- `app_enhanced.py` - Enhanced dashboard with batch optimization, export, confidence intervals
+- `tests/` - Unit tests for utility functions
+
 **What's in the notebooks?**
+
 - `01_eda_pricing_logic.ipynb` - Initial data exploration and understanding pricing patterns
 - `02_feature_engineering.ipynb` - Creating features that help predict demand
 - `03_modeling.ipynb` - Training and evaluating the Random Forest model
@@ -110,6 +126,7 @@ retail-price-optimization/
 ### Prerequisites
 
 You'll need:
+
 - Python 3.9 or higher
 - Git
 
@@ -164,6 +181,7 @@ The app will open in your browser automatically at `http://localhost:8501`.
 ### What you'll see
 
 The dashboard shows you:
+
 - **Current vs Optimal Price** - side by side comparison
 - **Revenue Curve** - how revenue changes at different price points
 - **Revenue Lift** - how much more money you could make
@@ -178,11 +196,11 @@ Pretty simple. The model does the heavy lifting, you just interpret the results.
 
 Here's what we found when testing on retail data:
 
-| Metric | Performance | Notes |
-|--------|-------------|-------|
-| **Model Accuracy** ($R^2$) | 0.62 | Not bad for noisy retail data |
-| **Revenue Uplift** | 15-20% | Average gain on underpriced products |
-| **Inference Speed** | <0.5s | Fast enough for real-time use |
+| Metric                     | Performance | Notes                                |
+| -------------------------- | ----------- | ------------------------------------ |
+| **Model Accuracy** ($R^2$) | 0.62        | Not bad for noisy retail data        |
+| **Revenue Uplift**         | 15-20%      | Average gain on underpriced products |
+| **Inference Speed**        | <0.5s       | Fast enough for real-time use        |
 
 ### Key Finding
 
@@ -191,6 +209,7 @@ The most interesting result? We found products with **inelastic demand** where c
 ### Real World Impact
 
 If you're a retailer, this translates to:
+
 - 15-20% more revenue on average (just by pricing smarter)
 - Instant recommendations (no more spreadsheet gymnastics)
 - Better competitive positioning (know where you stand vs competitors)
@@ -205,21 +224,25 @@ If you're a retailer, this translates to:
 The Random Forest looks at:
 
 **Price stuff:**
+
 - Current price
 - Price history and trends
 - Recent price changes
 
 **Competitor stuff:**
+
 - How much cheaper/expensive vs competitors (`diff_competitor`)
 - Relative price ratio (`ratio_competitor`)
 - Market positioning
 
 **Product stuff:**
+
 - Category
 - Seasonality patterns
 - Product age/lifecycle
 
 **Demand stuff:**
+
 - Historical sales volume
 - Impact of promotions
 - Overall market trends
@@ -251,6 +274,7 @@ Want to improve this? Cool. Here's how:
 4. Push and open a PR
 
 Some ideas if you want to contribute:
+
 - Try other models (XGBoost, Neural Nets)
 - Add A/B testing capability
 - Build an API
