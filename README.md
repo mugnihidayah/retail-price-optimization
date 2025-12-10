@@ -5,13 +5,14 @@
 ![Python](https://img.shields.io/badge/Python-3.9%2B-blue?style=for-the-badge&logo=python&logoColor=white)
 ![Streamlit](https://img.shields.io/badge/Streamlit-1.28%2B-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white)
 ![Scikit-Learn](https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)
+![Tests](https://img.shields.io/badge/Tests-75%20Passed-success?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
 
-**End-to-end Prescriptive Analytics using Random Forest**
+**End-to-end Prescriptive Analytics using Machine Learning**
 
 Simulates price elasticity and competitor data to prescribe optimal pricing strategies for revenue maximization.
 
-[Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Results](#-results--impact)
+[🎮 Live Demo](https://retail-price-optimization-mugni.streamlit.app/) • [Features](#-features) • [Installation](#-installation) • [Usage](#-usage)
 
 </div>
 
@@ -25,18 +26,26 @@ Simulates price elasticity and competitor data to prescribe optimal pricing stra
 - [Project Structure](#-project-structure)
 - [Installation](#-installation)
 - [Usage](#-usage)
+- [Testing](#-testing)
+- [Docker](#-docker)
 - [Results & Impact](#-results--impact)
-- [Contact](#-contact)
 
 ---
 
 ## 🎯 Overview
 
-The **Retail Price Optimization Engine** is a machine learning solution designed to shift retailers from reactive pricing to **Prescriptive Analytics**. Unlike traditional forecasting, this system doesn't just predict sales but it calculates the **Optimal Price Point**.
+The **Retail Price Optimization Engine** is a machine learning solution designed to shift retailers from reactive pricing to **Prescriptive Analytics**. Unlike traditional forecasting, this system doesn't just predict sales—it calculates the **Optimal Price Point**.
 
-By leveraging **Random Forest Regression**, the system learns the non-linear relationship between Price and Demand (Elasticity), factoring in competitor pricing to recommend strategies that maximize **Total Revenue**.
+By leveraging **Random Forest Regression** and other ensemble methods, the system learns the non-linear relationship between Price and Demand (Elasticity), factoring in competitor pricing to recommend strategies that maximize **Total Revenue**.
 
-Why does this matter? Most retailers still rely on gut feeling or simple cost-plus formulas for pricing. This leads to leaving money on the table (pricing too low) or losing customers (pricing too high). This engine uses actual data to find that sweet spot where revenue is maximized.
+### Why This Matters
+
+Most retailers still rely on gut feeling or simple cost-plus formulas for pricing. This leads to:
+
+- Leaving money on the table (pricing too low)
+- Losing customers (pricing too high)
+
+This engine uses actual data to find that sweet spot where revenue is maximized.
 
 ---
 
@@ -44,16 +53,25 @@ Why does this matter? Most retailers still rely on gut feeling or simple cost-pl
 
 ### 🤖 Core Intelligence
 
-- **Elasticity Modeling**: Captures non-linear demand response to price changes.
-- **Competitor Benchmarking**: Real-time tracking of price gaps against top 3 competitors (`diff_competitor`, `ratio_competitor`).
-- **Revenue Maximization**: Simulation algorithm tests 50+ price points per SKU to find the "Sweet Spot".
+- **Elasticity Modeling**: Captures non-linear demand response to price changes
+- **Competitor Benchmarking**: Real-time tracking of price gaps against competitors
+- **Revenue Maximization**: Simulation algorithm tests 50+ price points per SKU
+- **Confidence Intervals**: Uncertainty estimation for reliable recommendations
 
-### 📊 Interactive Dashboard (Streamlit)
+### 📊 Interactive Dashboard
 
-- **Product Portfolio View**: Filter products by category.
-- **Real-time Inference**: Sub-second prediction for pricing scenarios.
-- **Visual Analytics**: Interactive Plotly charts showing the Revenue Curve (Current vs Optimal).
-- **Strategic Insight**: Automated textual advice (e.g., "Raise Price" vs "Discount").
+- **Single & Batch Optimization**: Optimize one product or entire categories
+- **Real-time Inference**: Sub-second prediction for pricing scenarios
+- **Visual Analytics**: Interactive Plotly charts showing Revenue Curves
+- **Export to Excel/CSV**: Download optimization results
+- **Strategic Insights**: Automated recommendations (raise/lower/maintain price)
+
+### 🧪 Quality Assurance
+
+- **75 Unit Tests**: Comprehensive test coverage
+- **Input Validation**: Robust error handling and data validation
+- **CI/CD Pipeline**: Automated testing with GitHub Actions
+- **Docker Support**: Easy deployment with containerization
 
 ---
 
@@ -62,20 +80,20 @@ Why does this matter? Most retailers still rely on gut feeling or simple cost-pl
 ```mermaid
 graph LR
 A[Raw Data CSV] --> B(Feature Engineering)
-B --> C{Random Forest Model}
-C --> D[Price Simulation Logic]
+B --> C{ML Model}
+C --> D[Price Simulation]
 D --> E[Optimization Engine]
 E --> F[Streamlit Dashboard]
 ```
 
-The pipeline is pretty straightforward:
+**Pipeline Steps:**
 
-1. **Data Ingestion** - Load your historical sales and competitor pricing data
-2. **Feature Engineering** - Create features like price differences and ratios vs competitors
-3. **Model Training** - Random Forest learns how demand responds to price changes
-4. **Price Simulation** - Test different price points (usually 50+ scenarios per product)
-5. **Optimization** - Pick the price that gives you the highest revenue
-6. **Dashboard** - See everything visualized in the Streamlit app
+1. **Data Ingestion** - Load historical sales and competitor pricing data
+2. **Feature Engineering** - Create features like price differences/ratios vs competitors
+3. **Model Training** - Random Forest learns demand response to price changes
+4. **Price Simulation** - Test different price points (50+ scenarios per product)
+5. **Optimization** - Pick the price with highest predicted revenue
+6. **Dashboard** - Visualize everything in the Streamlit app
 
 ---
 
@@ -83,41 +101,43 @@ The pipeline is pretty straightforward:
 
 ```
 retail-price-optimization/
+├── .github/
+│   └── workflows/
+│       └── test.yml          # CI/CD pipeline
 ├── data/
-│   ├── processed/      # Cleaned data used for app demo
-│   └── raw/            # (Gitignored) Raw source data
+│   ├── processed/            # Cleaned data for app demo
+│   └── raw/                  # (Gitignored) Raw source data
 ├── models/
-│   ├── pricing_model.pkl         # Original Random Forest Model
-│   └── pricing_model_enhanced.pkl # XGBoost/LightGBM Model (after training)
+│   └── pricing_model.pkl     # Trained Random Forest model
 ├── notebooks/
 │   ├── 01_eda_pricing_logic.ipynb
 │   ├── 02_feature_engineering.ipynb
 │   ├── 03_modeling.ipynb
 │   └── 04_price_optimization.ipynb
 ├── tests/
-│   └── test_utils.py   # Unit tests
+│   ├── test_app.py           # Validation & elasticity tests
+│   ├── test_model_training.py # Model tests
+│   └── test_utils.py         # Utility function tests
 ├── .gitignore
-├── app.py              # Original Streamlit Application
-├── app_enhanced.py     # Enhanced App (batch optimization, export, etc.)
-├── model_training.py   # Model training with XGBoost, LightGBM, CV
-├── utils.py            # Utility functions
-├── requirements.txt    # Production dependencies
-└── README.md           # Documentation
+├── app.py                    # Main Streamlit Application
+├── config.py                 # Centralized configuration
+├── model_training.py         # Model training with CV & tuning
+├── utils.py                  # Utility functions & validation
+├── requirements.txt          # Production dependencies
+├── requirements-dev.txt      # Development dependencies
+├── Dockerfile                # Container configuration
+├── docker-compose.yml        # Docker Compose setup
+└── README.md                 # Documentation
 ```
 
-**What's new?**
+### Key Files
 
-- `utils.py` - Modular utility functions with safe division, input validation
-- `model_training.py` - Train multiple models (XGBoost, LightGBM, Random Forest) with cross-validation
-- `app_enhanced.py` - Enhanced dashboard with batch optimization, export, confidence intervals
-- `tests/` - Unit tests for utility functions
-
-**What's in the notebooks?**
-
-- `01_eda_pricing_logic.ipynb` - Initial data exploration and understanding pricing patterns
-- `02_feature_engineering.ipynb` - Creating features that help predict demand
-- `03_modeling.ipynb` - Training and evaluating the Random Forest model
-- `04_price_optimization.ipynb` - The optimization logic to find optimal prices
+| File                | Description                                                 |
+| ------------------- | ----------------------------------------------------------- |
+| `app.py`            | Main Streamlit dashboard with batch optimization, export    |
+| `config.py`         | Centralized configuration with environment variable support |
+| `model_training.py` | Train models with cross-validation & hyperparameter tuning  |
+| `utils.py`          | Validation functions, elasticity calculation, formatting    |
 
 ---
 
@@ -125,37 +145,29 @@ retail-price-optimization/
 
 ### Prerequisites
 
-You'll need:
-
 - Python 3.9 or higher
 - Git
 
-### Step 1: Clone the Repository
+### Quick Start
 
 ```bash
+# Clone the repository
 git clone https://github.com/mugnihidayah/retail-price-optimization.git
 cd retail-price-optimization
-```
 
-### Step 2: Create Virtual Environment
-
-```bash
-# Windows
+# Create virtual environment
 python -m venv venv
-venv\Scripts\activate
+venv\Scripts\activate  # Windows
+# source venv/bin/activate  # Mac/Linux
 
-# Mac/Linux
-python3 -m venv venv
-source venv/bin/activate
-```
-
-### Step 3: Install Dependencies
-
-```bash
+# Install dependencies
 pip install -r requirements.txt
+
+# Run the app
+streamlit run app.py
 ```
 
-That's it! You're ready to run the app.
+The app will open in your browser at `http://localhost:8501`.
 
 ---
 
@@ -163,123 +175,146 @@ That's it! You're ready to run the app.
 
 ### Running the Application
 
-Just run:
-
 ```bash
 streamlit run app.py
 ```
 
-The app will open in your browser automatically at `http://localhost:8501`.
+### How to Use
 
-### How to use it
+1. **Open** the app in your browser
+2. **Select** a product category from the sidebar
+3. **Choose** Single Product or Batch Optimization mode
+4. **Click** "Run AI Optimization"
+5. **Review** results and download recommendations
 
-1. Open the app in your browser
-2. Select a product category from the sidebar
-3. Click "Run AI Optimization"
-4. Check out the results (revenue curves, optimal prices, recommendations)
+### What You'll See
 
-### What you'll see
+- **Revenue Curve**: How revenue changes at different price points
+- **Optimal Price**: AI-recommended price with confidence interval
+- **Revenue Uplift**: Potential revenue increase
+- **Competitor Comparison**: Your position vs the market
+- **Action**: Should you increase, decrease, or maintain price?
 
-The dashboard shows you:
+---
 
-- **Current vs Optimal Price** - side by side comparison
-- **Revenue Curve** - how revenue changes at different price points
-- **Revenue Lift** - how much more money you could make
-- **Action** - should you increase, decrease, or keep the price?
-- **Competitor Comparison** - where you stand vs the market
+## 🧪 Testing
 
-Pretty simple. The model does the heavy lifting, you just interpret the results.
+### Run All Tests
+
+```bash
+# Install dev dependencies
+pip install -r requirements-dev.txt
+
+# Run tests
+pytest tests/ -v
+
+# Run with coverage
+pytest tests/ -v --cov=. --cov-report=html
+```
+
+### Test Coverage
+
+| Test File                | Tests  | Coverage                      |
+| ------------------------ | ------ | ----------------------------- |
+| `test_utils.py`          | 33     | Utility functions, validation |
+| `test_model_training.py` | 18     | PricingModel class            |
+| `test_app.py`            | 24     | Validation, elasticity        |
+| **Total**                | **75** | **~85%**                      |
+
+---
+
+## 🐳 Docker
+
+### Build and Run
+
+```bash
+# Build image
+docker build -t retail-price-optimization .
+
+# Run container
+docker run -p 8501:8501 retail-price-optimization
+```
+
+### Using Docker Compose
+
+```bash
+docker-compose up
+```
+
+Access the app at `http://localhost:8501`.
 
 ---
 
 ## 📊 Results & Impact
 
-Here's what we found when testing on retail data:
-
-| Metric                     | Performance | Notes                                |
-| -------------------------- | ----------- | ------------------------------------ |
-| **Model Accuracy** ($R^2$) | 0.62        | Not bad for noisy retail data        |
-| **Revenue Uplift**         | 15-20%      | Average gain on underpriced products |
-| **Inference Speed**        | <0.5s       | Fast enough for real-time use        |
+| Metric              | Performance | Notes                       |
+| ------------------- | ----------- | --------------------------- |
+| **Model R²**        | 0.62        | Solid for noisy retail data |
+| **Revenue Uplift**  | 15-20%      | On underpriced products     |
+| **Inference Speed** | <0.5s       | Real-time capable           |
+| **Test Coverage**   | 75 tests    | All passing                 |
 
 ### Key Finding
 
-The most interesting result? We found products with **inelastic demand** where customers don't really care about small price changes. For these items, we could increase prices significantly (in one case, a 98% revenue boost) without losing customers. That's the kind of insight you can't get from gut feeling alone.
+We found products with **inelastic demand** where customers don't care about small price changes. For these items, we could increase prices significantly (up to 98% revenue boost!) without losing customers.
 
 ### Real World Impact
 
-If you're a retailer, this translates to:
-
-- 15-20% more revenue on average (just by pricing smarter)
-- Instant recommendations (no more spreadsheet gymnastics)
-- Better competitive positioning (know where you stand vs competitors)
-- Clear action items (the model tells you exactly what to do)
+- **15-20% more revenue** on average (just by pricing smarter)
+- **Instant recommendations** (no more spreadsheet gymnastics)
+- **Better competitive positioning** (know where you stand)
+- **Clear action items** (the model tells you what to do)
 
 ---
 
-## 🔍 How It Works
+## 🔧 Development
 
-### Features used in the model
+### Setting Up Dev Environment
 
-The Random Forest looks at:
-
-**Price stuff:**
-
-- Current price
-- Price history and trends
-- Recent price changes
-
-**Competitor stuff:**
-
-- How much cheaper/expensive vs competitors (`diff_competitor`)
-- Relative price ratio (`ratio_competitor`)
-- Market positioning
-
-**Product stuff:**
-
-- Category
-- Seasonality patterns
-- Product age/lifecycle
-
-**Demand stuff:**
-
-- Historical sales volume
-- Impact of promotions
-- Overall market trends
-
-### The optimization algorithm
-
-Pretty simple actually:
-
-```
-For each product:
-  Test 50 different price points
-  For each price:
-    - Use Random Forest to predict demand
-    - Calculate revenue (price × demand)
-  Pick the price with highest revenue
+```bash
+pip install -r requirements-dev.txt
 ```
 
-No fancy math needed. Just brute force simulation to find what works best.
+### Train a New Model
+
+```bash
+# Basic training
+python model_training.py
+
+# With hyperparameter tuning
+python model_training.py --tune
+```
+
+### Code Quality
+
+```bash
+# Linting
+flake8 .
+
+# Formatting
+black .
+
+# Type checking
+mypy .
+```
 
 ---
 
 ## 🤝 Contributing
 
-Want to improve this? Cool. Here's how:
-
 1. Fork the repo
 2. Create a branch (`git checkout -b feature/cool-stuff`)
 3. Make your changes
-4. Push and open a PR
+4. Run tests (`pytest tests/ -v`)
+5. Push and open a PR
 
-Some ideas if you want to contribute:
+### Ideas for Contributions
 
-- Try other models (XGBoost, Neural Nets)
+- Add Neural Network model option
+- Build REST API with FastAPI
 - Add A/B testing capability
-- Build an API
-- Better visualizations
-- More competitor data sources
+- Improve visualizations
+- Add more competitor data sources
 
 ---
 
@@ -291,6 +326,8 @@ MIT License. Do whatever you want with it.
 
 <div align="center">
 
-⭐ Star this repo if you find it useful!
+⭐ **Star this repo if you find it useful!**
+
+[🎮 Try the Live Demo](https://retail-price-optimization-mugni.streamlit.app/)
 
 </div>
